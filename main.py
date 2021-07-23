@@ -9,7 +9,9 @@ def main(args):
     filename = "resources/v2_1.vcf"
     cards = reader.parseFile(filename)
 
-    card = cards[0]
+    for card in cards:
+        print("\n".join(list(map(lambda prop: str(prop), card.properties))))
+        print()
 
 
 if __name__ == "__main__":

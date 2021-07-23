@@ -1,7 +1,7 @@
 #
 # vcfリーダ
 #
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 from vcflib.Property import Property
 from vcflib.VCard import VCard
 import re
@@ -45,7 +45,7 @@ class VCardFileReader():
         
         # プロパティバッファ
         current_property_name = "" # 最後に検出されたプロパティの名称
-        current_property_params: Dict[str, str] = {} # 最後に検出されたプロパティの付帯情報
+        current_property_params: Dict[str, Union[str, List[str]]] = {} # 最後に検出されたプロパティの付帯情報
         current_property_value = "" # 最後に検出されたプロパティの値
 
         is_property_detected = False # プロパティを検出しているか?
@@ -86,12 +86,13 @@ class VCardFileReader():
         return properties
 
     # パラメータ解析(AAA=BBB;CCC=DDDを{'AAA': 'BBB', 'CCC': 'DDD'}に変換)
-    def __parse_parameters(self, params) -> Dict[str, str]:
-        parameters = {}
+    def __parse_parameters(self, params) -> Dict[str, Union[str, List[str]]]:
+        parameters:Dict[str, Union[str, List[str]]] = {}
 
         def parse_param(info):
             key, value = info.split('=')[0], info.split('=')[1:]
             
+            # key-valueのvalueにあたる値がない(type=VOICEのような形式でなく PREF; など)場合
             if len(value) == 0:
                 return {"type": key}
 
@@ -99,6 +100,14 @@ class VCardFileReader():
 
         property_params_raw = list(map(parse_param, params))
         for param in property_params_raw:
-            parameters.update(param)
+            key = list(param.keys())[0]
+
+            # typeキーに関しては無条件で配列に変換
+            if key == "type":
+                current = list(parameters["type"]) if "type" in parameters else []
+                current.append(param[key])
+                parameters["type"] = current
+            else:
+                parameters.update(param)
 
         return parameters
