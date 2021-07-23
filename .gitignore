@@ -1,3 +1,4 @@
 resources/
 *.log
 *.vcf
+__pycache__
