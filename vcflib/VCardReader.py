@@ -27,7 +27,7 @@ class VCardReader():
 
             # デコードしてVCardを生成
             decoder = PropertyDecoder()
-            cards.append(VCard([decoder.decode(prop) for prop in encoded_properties]))
+            cards.append(VCard(properties=[decoder.decode(prop) for prop in encoded_properties]))
         
         return cards
     
