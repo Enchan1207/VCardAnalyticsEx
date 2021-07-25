@@ -25,6 +25,8 @@ class VCardWriter():
 
         """
 
+        lines = []
+        
         if isinstance(cards, VCard):
             lines = self.parseLines(cards)
         elif isinstance(cards, list):
@@ -54,7 +56,7 @@ class VCardWriter():
         lines_buffer.append("BEGIN:VCARD")
 
         # propertiesを回す
-        for prop in card.properties:
+        for prop in card.getProperties():
             encoder = PropertyEncoder()
             enctype = ""
             if prop.name == "PHOTO":

@@ -2,8 +2,8 @@
 # Propertyエンコーダ
 #
 from typing import Dict, Union
-from vcflib.EncodedProperty import EncodedProperty
-from vcflib.Property import Property
+from vcflib.properties.EncodedProperty import EncodedProperty
+from vcflib.properties.Property import Property
 import base64
 import quopri
 

@@ -1,19 +1,23 @@
 #
 # VCFフォーマット解析
 #
-from os import write
-import sys, jaconv
+import sys
+from vcflib.properties.Property import Property
 from vcflib.VCardWriter import VCardWriter
-from vcflib.PropertyEncoder import PropertyEncoder
-from vcflib.VCardReader import VCardReader
+from vcflib.properties.FullNameProperty import FullNameProperty
+from vcflib.VCard import VCard
+from vcflib.properties.NameProperty import NameProperty
+
+from datetime import datetime
 
 def main(args):
-    reader = VCardReader()
-    filename = args[1] if len(args) > 1 else "resources/v2_1.vcf"
-    cards = reader.parseFile(filename)
+    vcard = VCard()
+    vcard.addProperty(FullNameProperty("Steven Paul Jobs")) \
+        .addProperty(NameProperty("Steven", "Jobs", "Paul")) \
+        .addProperty(Property("ADR", {}, "1 Apple Park Way\, Cupertino\, CA".encode()))
 
     writer = VCardWriter()
-    writer.writeFile("test.vcf", cards)
+    writer.writeFile("jobs.vcf", vcard)
 
 
 if __name__ == "__main__":
