@@ -1,7 +1,9 @@
 #
 # vcfリーダ
 #
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Tuple, Union
+from vcflib.PropertyDecoder import PropertyDecoder
+from vcflib.EncodedProperty import EncodedProperty
 from vcflib.Property import Property
 from vcflib.VCard import VCard
 import re
@@ -16,16 +18,17 @@ class VCardFileReader():
         # 改行で分割して
         lines = vcfstring.split("\n")
 
-        # カード単位でパース、さらにプロパティをパース
-        parsed_cards_raw = [self.__parse_properties(card) for card in self.__parse_cards(lines)]
+        # カード単位でパース
+        cards: List[VCard] = []
+        cards_raw = self.__parse_cards(lines)
+        for card in cards_raw:
+            # エンコード済みのプロパティを取得、EncodedPropertyに変換
+            encoded_properties = [EncodedProperty(name, params, value) for (name, params, value) in self.__parse_properties(card)]
 
-        # プロパティにエンコードに関する情報が含まれている場合はそれに従い元のデータを復元し、
-
-        # vcflib.Propertyを生成
+            # デコードしてVCardを生成
+            decoder = PropertyDecoder()
+            cards.append(VCard([decoder.decode(prop) for prop in encoded_properties]))
         
-        # PropetyをまとめてVCardを生成してreturn
-        
-        cards = [VCard([Property(prop[0], prop[1], prop[2]) for prop in card_raw]) for card_raw in parsed_cards_raw]
         return cards
     
     def parseFile(self, filepath: str) -> List[VCard]:
@@ -52,7 +55,7 @@ class VCardFileReader():
         return cards
 
     # vCard形式のstring配列をパース(AAA;BBB=CCC:DDDを["AAA", {'BBB': 'CCC'}, "DDD"]に変換)
-    def __parse_properties(self, lines: List[str]) -> List[Any]:
+    def __parse_properties(self, lines: List[str]) -> List[Tuple[str, Dict[str, Union[str, List[str]]], str]]:
         properties = []
         
         # プロパティバッファ
@@ -68,7 +71,7 @@ class VCardFileReader():
             if re.search(r"[^\\]:", line):
                 # 現時点で何らかのプロパティを検出していればそれを保存する
                 if is_property_detected:
-                    properties.append([current_property_name, current_property_params, current_property_value])
+                    properties.append((current_property_name, current_property_params, current_property_value))
 
                     # バッファ初期化
                     current_property_value = ""
