@@ -12,16 +12,11 @@ def main(args):
 
     for card in cards:
         for prop in card.properties:
-            name = prop.name
-            value = prop.value
-            try:
-                value_decoded = prop.value.decode()
-                if name.startswith("X-PHONETIC"):
-                    value_decoded = jaconv.h2z(value_decoded)
-            except UnicodeDecodeError:
-                value_decoded = f"(binary: {len(value)} bytes)"
-            
-            print(f"{name}:{value_decoded}")
+            encoder = PropertyEncoder()
+            enctype = ""
+            if prop.name == "PHOTO":
+                enctype = "b"
+            print(encoder.encode(prop, enctype))
         
         print()
 

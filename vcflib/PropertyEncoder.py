@@ -38,18 +38,21 @@ class PropertyEncoder():
         params = property.parameters
         value = property.value
 
-        # 適宜エンコード
-        value_encoded = value
+        # エンコード情報を消す(Encoderの指定と異なってしまうのを防ぐため)
+        if 'ENCODING' in params:
+            del params['ENCODING']
 
+        # 適宜エンコード
         enctype = (enctype or "").lower()
-        print(enctype)
         if enctype in ['b', 'base64']:
-            value_encoded = base64.encodebytes(value)
+            value_encoded = base64.encodebytes(value).decode().replace("\n", "\n ")
             params['ENCODING'] = "BASE64"
-        if enctype in ['quoted-printable']:
-            value_encoded = quopri.encodestring(value)
+        if enctype in ['q', 'quoted-printable']:
+            value_encoded = quopri.encodestring(value).decode()
             params['ENCODING'] = "QUOTED-PRINTABLE"
+        if enctype == "":
+            value_encoded = value.decode()
 
         # EncodedPropertyを生成して返す
-        property_encoded = EncodedProperty(name, params, value_encoded.decode())
+        property_encoded = EncodedProperty(name, params, value_encoded)
         return property_encoded

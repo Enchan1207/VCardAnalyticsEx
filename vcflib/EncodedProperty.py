@@ -23,7 +23,14 @@ class EncodedProperty():
         return self.__enctype
 
     def __str__(self) -> str:
-        # TODO: 74文字制限をなんとかする (普通に改行挟むだけだとquopriが壊れる)
-        params_encoded = [f"{key}={self.params[key]}" for key in self.params.keys()]
+        # パラメータを文字列に変換する 基本はkey=value、ただし配列の場合はkey=valueを繰り返す(つまり同じkeyが重複する)
+        params_encoded = []
+        for key in self.params.keys():
+            value = self.params[key]
+            if type(value) == list:
+                for val in value:
+                    params_encoded.append(f"{key}={val}")
+            else:
+                params_encoded.append(f"{key}={value}")
         property_string = f"{';'.join([self.name, *params_encoded])}:{self.value}"
         return property_string
