@@ -8,7 +8,7 @@ from vcflib.Property import Property
 from vcflib.VCard import VCard
 import re
 
-class VCardFileReader():
+class VCardReader():
     
     def __init__(self) -> None:
         pass

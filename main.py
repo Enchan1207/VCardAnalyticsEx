@@ -1,24 +1,19 @@
 #
 # VCFフォーマット解析
 #
+from os import write
 import sys, jaconv
+from vcflib.VCardWriter import VCardWriter
 from vcflib.PropertyEncoder import PropertyEncoder
-from vcflib.VCardFileReader import VCardFileReader
+from vcflib.VCardReader import VCardReader
 
 def main(args):
-    reader = VCardFileReader()
+    reader = VCardReader()
     filename = args[1] if len(args) > 1 else "resources/v2_1.vcf"
     cards = reader.parseFile(filename)
 
-    for card in cards:
-        for prop in card.properties:
-            encoder = PropertyEncoder()
-            enctype = ""
-            if prop.name == "PHOTO":
-                enctype = "b"
-            print(encoder.encode(prop, enctype))
-        
-        print()
+    writer = VCardWriter()
+    writer.writeFile("test.vcf", cards)
 
 
 if __name__ == "__main__":
