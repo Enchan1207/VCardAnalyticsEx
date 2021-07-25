@@ -11,15 +11,27 @@ class VCardFileReader():
     def __init__(self) -> None:
         pass
 
-    def parseLines(self, lines: List[str]) ->List[VCard]:
+    # vcfフォーマット文字列からVCardを生成する
+    def parseLines(self, vcfstring: str) ->List[VCard]:
+        # 改行で分割して
+        lines = vcfstring.split("\n")
+
+        # カード単位でパース、さらにプロパティをパース
         parsed_cards_raw = [self.__parse_properties(card) for card in self.__parse_cards(lines)]
+
+        # プロパティにエンコードに関する情報が含まれている場合はそれに従い元のデータを復元し、
+
+        # vcflib.Propertyを生成
+        
+        # PropetyをまとめてVCardを生成してreturn
+        
         cards = [VCard([Property(prop[0], prop[1], prop[2]) for prop in card_raw]) for card_raw in parsed_cards_raw]
         return cards
     
     def parseFile(self, filepath: str) -> List[VCard]:
         with open(filepath, "r") as f:
             lines = f.readlines()
-        return self.parseLines(lines)
+        return self.parseLines("".join(lines))
 
     # 複数のvCard形式のstring配列をカード単位で分割
     def __parse_cards(self, lines:List[str]) -> List[List[str]]:
