@@ -3,8 +3,8 @@
 #
 
 from typing import Union
-from vcflib.EncodedProperty import EncodedProperty
-from vcflib.Property import Property
+from vcflib.properties.EncodedProperty import EncodedProperty
+from vcflib.properties.Property import Property
 import re, quopri, base64
 
 class PropertyDecoder():

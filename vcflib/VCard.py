@@ -2,13 +2,29 @@
 # vCardオブジェクト
 #
 from typing import List, Union
-from vcflib.Property import Property
-
+from vcflib.properties.Property import Property
+from vcflib.properties.VersionProperty import VersionProperty
+from vcflib.properties.FullNameProperty import FullNameProperty
 class VCard():
 
-    def __init__(self, properties: List[Property] = []) -> None:
-        self.properties: List[Property] = properties
+    def __init__(self, version: str="4.0", properties: List[Property] = []) -> None:
+        self.__properties: List[Property] = properties
+        self.addProperty(VersionProperty(version))
 
-    def getProperty(self, name) -> Union[Property, None]:
-        candidates = list(filter(lambda prop: prop.name == name, self.properties))
+    def getProperties(self) -> List[Property]:
+        return self.__properties
+
+    def addProperty(self, property: Property, overwrite: bool = False):
+        # 既存のものと名前が被らなければ追加
+        if self.getPropertyByName(property.name) is None or overwrite:
+            self.__properties.append(property)
+
+        # method chain
+        return self
+
+    def removePropertyByName(self, name):
+        self.__properties = list(filter(lambda prop: prop.name != name, self.__propertties))
+
+    def getPropertyByName(self, name) -> Union[Property, None]:
+        candidates = list(filter(lambda prop: prop.name == name, self.__properties))
         return candidates[0] if len(candidates) > 0 else None

@@ -3,8 +3,8 @@
 #
 from typing import Any, Dict, List, Tuple, Union
 from vcflib.PropertyDecoder import PropertyDecoder
-from vcflib.EncodedProperty import EncodedProperty
-from vcflib.Property import Property
+from vcflib.properties.EncodedProperty import EncodedProperty
+from vcflib.properties.Property import Property
 from vcflib.VCard import VCard
 import re
 
