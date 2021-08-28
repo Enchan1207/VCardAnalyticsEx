@@ -9,24 +9,24 @@ class VCard():
 
     def __init__(self, version: str="4.0", properties: List[Property] = []) -> None:
         self.__properties: List[Property] = properties
-        self.addProperty(VersionProperty(version))
+        self.add_property(VersionProperty(version))
 
-    def getProperties(self) -> List[Property]:
+    def get_properties(self) -> List[Property]:
         return self.__properties
 
-    def addProperty(self, property: Property, overwrite: bool = False):
+    def add_property(self, property: Property, overwrite: bool = False):
         # 強制上書きの場合は一旦消す
         if overwrite:
-            self.removePropertyByName(property.name)
+            self.remove_property(property.name)
 
         # 追加
         self.__properties.append(property)
 
         return self
 
-    def removePropertyByName(self, name):
+    def remove_property(self, name):
         self.__properties = list(filter(lambda prop: prop.name != name, self.__properties))
 
-    def getPropertyByName(self, name) -> Union[Property, None]:
+    def get_property_by_name(self, name) -> Union[Property, None]:
         candidates = list(filter(lambda prop: prop.name == name, self.__properties))
         return candidates[0] if len(candidates) > 0 else None

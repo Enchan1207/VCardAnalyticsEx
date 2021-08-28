@@ -10,9 +10,6 @@ import quopri
 
 class PropertyEncoder():
 
-    def __init__(self) -> None:
-        pass
-
     def encode(self, property: Property, enctype: Union[str, None] = None) -> EncodedProperty:
         """
             vcflib.PropertyをエンコードしてEncodedPropertyを生成する.

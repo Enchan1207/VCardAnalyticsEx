@@ -8,10 +8,7 @@ from vcflib.VCard import VCard
 
 class VCardWriter():
 
-    def __init__(self) -> None:
-        pass
-
-    def writeFile(self, filepath: str, cards: Union[VCard, List[VCard]]):
+    def write_file(self, filepath: str, cards: Union[VCard, List[VCard]]):
         """
             VCardをファイルに書き出す.
 
@@ -28,16 +25,16 @@ class VCardWriter():
         lines = []
         
         if isinstance(cards, VCard):
-            lines = self.parseLines(cards)
+            lines = self.parse_lines(cards)
         elif isinstance(cards, list):
             lines = []
             for card in cards:
-                lines.extend(self.parseLines(card))
+                lines.extend(self.parse_lines(card))
 
         with open(filepath, "w") as f:
             f.write("\r\n".join(lines))
 
-    def parseLines(self, card: VCard) -> List[str]:
+    def parse_lines(self, card: VCard) -> List[str]:
         """
             VCardをvcfフォーマットに変換する。
 
@@ -56,7 +53,7 @@ class VCardWriter():
         lines_buffer.append("BEGIN:VCARD")
 
         # propertiesを回す
-        for prop in card.getProperties():
+        for prop in card.get_properties():
             encoder = PropertyEncoder()
             enctype = ""
             if prop.name == "PHOTO":

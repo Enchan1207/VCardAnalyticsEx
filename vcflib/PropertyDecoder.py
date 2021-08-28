@@ -9,9 +9,6 @@ import re, quopri, base64
 
 class PropertyDecoder():
 
-    def __init__(self) -> None:
-        pass
-
     def decode(self, encoded: EncodedProperty) -> Property:
         """
             vcflib.EncodedPropertyからvcflib.Propertyを生成する。
