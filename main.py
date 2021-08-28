@@ -1,48 +1,17 @@
 #
-# VCFフォーマット解析
+# vCardフォーマット解析
 #
-from os import nice
-import sys, jaconv
-import vcflib
+import sys
+from typing import List
 
-def main(args):
-    # ファイル読み込み
-    filepath = args[1] if len(args) > 1 else "resources/yasuhiko.vcf"
-    cards = vcflib.VCardReader().parseFile(filepath)
-    newcards = []
-
-    for card in cards:
-        # 新しいカードを作り、
-        newcard = vcflib.VCard(version="4.0", properties=[])
-
-        # 既存のプロパティを流し込む
-        for prop in card.getProperties():
-            newcard.addProperty(prop)
-
-        # ふりがなは全角にして上書き
-        phonetic_prop = card.getPropertyByName("X-PHONETIC-FIRST-NAME")
-        if phonetic_prop is not None:
-            phonetic_name = jaconv.h2z(phonetic_prop.value.decode())
-            phonetic_new_prop = vcflib.Property("X-PHONETIC-LAST-NAME", {"CHARSET": "UTF-8"}, phonetic_name.encode())
-            newcard.addProperty(phonetic_new_prop, True)
-        newcard.removePropertyByName("X-PHONETIC-FIRST-NAME")
-
-        # X-GROUP-MEMBERSHIPはORGに変換 (めんどくさいため)
-        group_prop = card.getPropertyByName("X-GROUP-MEMBERSHIP")
-        if group_prop is not None:
-            group_name = jaconv.h2z(group_prop.value.decode())
-            group_new_prop = vcflib.Property("ORG", {}, group_name.encode())
-            newcard.addProperty(group_new_prop, True)
-        newcard.removePropertyByName("X-GROUP-MEMBERSHIP")
-
-        newcards.append(newcard)
-
-    writer = vcflib.VCardWriter()
-    writer.writeFile(f"{filepath}_.vcf", newcards)
+def main(args: List[str]) -> int:
+    print("スクリプトを実行する場合は python -m scripts.(ファイル名) を実行してください。")
+    return 0
 
 if __name__ == "__main__":
+    result = 0
     try:
-        main(sys.argv)
-    except KeyboardInterrupt:
+        result = main(sys.argv) or 0
+    except KeyboardInterrupt: 
         print("Ctrl+C")
-        exit(0)
+        exit(result)
