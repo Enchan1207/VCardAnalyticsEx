@@ -9,3 +9,9 @@ class Property():
         self.name: str = name
         self.parameters: Dict[str, Union[str, List[str]]] = parameters
         self.value: bytes = value
+
+    def __eq__(self, o: object) -> bool:
+        if not issubclass(type(o), Property):
+            return False
+        
+        return self.name == o.name

@@ -1,32 +1,90 @@
 #
 # vCardオブジェクト
 #
-from typing import List, Union
+from typing import List
 from vcflib.properties.Property import Property
 from vcflib.properties.VersionProperty import VersionProperty
-from vcflib.properties.FullNameProperty import FullNameProperty
+from __future__ import annotations
+
+
 class VCard():
 
-    def __init__(self, version: str="4.0", properties: List[Property] = []) -> None:
-        self.__properties: List[Property] = properties
+    """
+    連絡先カード (vCard) を表すデータクラスです。
+    """
+
+    def __init__(self, version: str = "4.0", props: List[Property] = []) -> None:
+        """
+        インスタンスを生成します。自動でVersionPropertyが追加されます。
+
+        Args:
+            props (List[Property]) : 初期状態のプロパティ配列。
+        """
+
+        if not issubclass(type(props), list):
+            raise ValueError("Invalid argument")
+
+        self.properties: List[Property] = props
         self.add_property(VersionProperty(version))
 
-    def get_properties(self) -> List[Property]:
-        return self.__properties
+    def add_property(self, prop: Property, overwrite: bool = False) -> VCard:
+        """
+        vCardにプロパティを追加します。
 
-    def add_property(self, property: Property, overwrite: bool = False):
-        # 強制上書きの場合は一旦消す
+        Args:
+            prop (Property) : 追加対象のプロパティ。
+            overwrite (bool) : Trueを設定するとパラメータを上書きします。
+
+        Raises:
+            ValueError : 引数が不正だった場合。
+        
+        Return:
+            VCard
+        """
+
+        if not issubclass(type(prop), Property):
+            raise ValueError("Invalid argument")
+
+        # 強制上書きの場合は一旦消して
         if overwrite:
-            self.remove_property(property.name)
+            self.remove_property(prop)
 
         # 追加
-        self.__properties.append(property)
+        self.properties.append(prop)
 
         return self
 
-    def remove_property(self, name):
-        self.__properties = list(filter(lambda prop: prop.name != name, self.__properties))
+    def remove_property(self, prop: Property):
+        """
+        引数に渡されたプロパティを削除します。
 
-    def get_property_by_name(self, name) -> Union[Property, None]:
-        candidates = list(filter(lambda prop: prop.name == name, self.__properties))
-        return candidates[0] if len(candidates) > 0 else None
+        Args:
+            prop (Property) : 削除対象のプロパティ。
+
+        Raises:
+            ValueError : 引数が不正だった場合。
+        """
+
+        if not issubclass(type(prop), Property):
+            raise ValueError("Invalid argument")
+
+        self.properties = list(filter(lambda p: p != prop, self.properties))
+
+    def is_exists(self, prop: Property) -> bool:
+        """
+        引数に渡されたプロパティを持っているか返します。
+
+        Args:
+            prop (Property) : 対象のプロパティ。
+
+        Returns:
+            bool : プロパティを持っていればTrue。
+
+        Raises:
+            ValueError : 引数が不正だった場合。
+        """
+
+        if not issubclass(type(prop), Property):
+            raise ValueError("Invalid argument")
+
+        return len(list(filter(lambda p: p == prop, self.properties))) == 1
