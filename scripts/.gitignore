@@ -2,4 +2,4 @@
 !.gitignore
 !__init__.py
 !about.md
-
+!ex_*

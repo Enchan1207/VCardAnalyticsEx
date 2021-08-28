@@ -15,16 +15,14 @@ class VCard():
         return self.__properties
 
     def addProperty(self, property: Property, overwrite: bool = False):
-        # 既存のものと名前が被らなければ追加
-        if self.getPropertyByName(property.name) is None:
-            self.__properties.append(property)
-            return self
-
-        # 上書き強制
+        # 強制上書きの場合は一旦消す
         if overwrite:
             self.removePropertyByName(property.name)
-            self.__properties.append(property)
-            return self
+
+        # 追加
+        self.__properties.append(property)
+
+        return self
 
     def removePropertyByName(self, name):
         self.__properties = list(filter(lambda prop: prop.name != name, self.__properties))
