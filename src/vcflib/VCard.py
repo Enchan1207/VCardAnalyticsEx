@@ -1,10 +1,12 @@
 #
 # vCardオブジェクト
 #
-from typing import List
-from vcflib.properties.Property import Property
-from vcflib.properties.VersionProperty import VersionProperty
 from __future__ import annotations
+
+from typing import List
+
+from .properties.Property import Property
+from .properties.VersionProperty import VersionProperty
 
 
 class VCard():

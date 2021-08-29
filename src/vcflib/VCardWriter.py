@@ -2,8 +2,9 @@
 # vcfライタ
 #
 from typing import List, Union
-from vcflib.PropertyEncoder import PropertyEncoder
-from vcflib.VCard import VCard
+
+from .PropertyEncoder import PropertyEncoder
+from .VCard import VCard
 
 
 class VCardWriter():

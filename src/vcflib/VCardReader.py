@@ -1,12 +1,13 @@
 #
 # vcfリーダ
 #
-from typing import Any, Dict, List, Tuple, Union
-from vcflib.PropertyDecoder import PropertyDecoder
-from vcflib.properties.EncodedProperty import EncodedProperty
-from vcflib.properties.Property import Property
-from vcflib.VCard import VCard
 import re
+from typing import Dict, List, Tuple, Union
+
+from .properties.EncodedProperty import EncodedProperty
+from .PropertyDecoder import PropertyDecoder
+from .VCard import VCard
+
 
 class VCardReader():
     

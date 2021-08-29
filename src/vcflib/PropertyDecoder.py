@@ -1,11 +1,13 @@
 #
 # Propertyデコーダ
 #
+import base64
+import quopri
+import re
 
-from typing import Union
-from vcflib.properties.EncodedProperty import EncodedProperty
-from vcflib.properties.Property import Property
-import re, quopri, base64
+from .properties.EncodedProperty import EncodedProperty
+from .properties.Property import Property
+
 
 class PropertyDecoder():
 

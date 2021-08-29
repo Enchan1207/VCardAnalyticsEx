@@ -3,7 +3,7 @@
 #
 
 from typing import Dict, List, Union
-from vcflib.properties.Property import Property
+from .Property import Property
 
 class EmailAddressProperty(Property):
 

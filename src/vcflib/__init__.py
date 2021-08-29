@@ -1,10 +1,10 @@
 #
 # vCard library
 #
-from vcflib.properties import *
+from .properties import *
 
-from vcflib.PropertyDecoder import PropertyDecoder
-from vcflib.PropertyEncoder import PropertyEncoder
-from vcflib.VCard import VCard
-from vcflib.VCardReader import VCardReader
-from vcflib.VCardWriter import VCardWriter
+from .PropertyDecoder import PropertyDecoder
+from .PropertyEncoder import PropertyEncoder
+from .VCard import VCard
+from .VCardReader import VCardReader
+from .VCardWriter import VCardWriter

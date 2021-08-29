@@ -2,7 +2,7 @@
 # プロパティ "N" (RFC6350 6.2.2.)
 #
 
-from vcflib.properties.Property import Property
+from .Property import Property
 
 class NameProperty(Property):
 

@@ -2,7 +2,7 @@
 # プロパティ "VERSION" (RFC6350 6.7.9)
 #
 
-from vcflib.properties.Property import Property
+from .Property import Property
 
 class VersionProperty(Property):
 
