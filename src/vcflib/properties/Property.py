@@ -16,7 +16,7 @@ class Property():
 
     def __str__(self) -> str:
         class_name = self.__class__.__name__
-        prop_list = [f"{key}: {self.parameters[key]}" for key in self.parameters.keys()]
+        prop_list = [f"{key}: {self.parameters[key][:10]}... " for key in self.parameters.keys()]
 
         return f"{class_name} (properties: {','.join(prop_list)})"
 
