@@ -1,0 +1,6 @@
+#
+# pip依存関係
+#
+
+# PyPI
+aiounittest==1.4.0
